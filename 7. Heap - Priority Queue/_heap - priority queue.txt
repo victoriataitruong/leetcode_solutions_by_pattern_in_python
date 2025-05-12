@@ -1,0 +1,174 @@
+What is a Heap?
+A heap is a binary tree with two main properties:
+
+Complete Binary Tree: All levels of the tree are fully filled except possibly the last one, which is filled from left to right.
+
+Heap Property:
+
+Min-Heap: The value of the parent node is less than or equal to the values of its children.
+
+Max-Heap: The value of the parent node is greater than or equal to the values of its children.
+
+In a min-heap, the root node will always contain the smallest element, while in a max-heap, the root will contain the largest element.
+
+Priority Queue:
+A priority queue is a data structure that supports efficient access to the highest-priority element. Typically, a priority queue is implemented using a heap, which ensures that both insertions and deletions are done efficiently.
+
+In a min-priority queue, the smallest element is removed first.
+
+In a max-priority queue, the largest element is removed first.
+
+Heap Operations
+The heap supports the following operations efficiently:
+
+Insert: Add a new element to the heap.
+
+Extract-Min (or Extract-Max): Remove and return the smallest (or largest) element from the heap.
+
+Peek: Return the smallest (or largest) element without removing it.
+
+Heapify: Maintain the heap property after an insert or removal.
+
+Time Complexity:
+Insert: O(log n)
+
+Extract-Min/Extract-Max: O(log n)
+
+Peek: O(1)
+
+Heapify: O(n)
+
+Python’s heapq Module
+In Python, the heapq module provides an efficient implementation of a min-heap. It uses a list to represent the heap and provides functions for performing heap operations. However, heapq only implements a min-heap by default. To simulate a max-heap, we can insert negative values or use a custom comparator.
+
+Basic Operations in Python using heapq
+heapq.heappush(heap, item): Push a new item onto the heap, maintaining the heap property.
+
+heapq.heappop(heap): Pop the smallest item from the heap, maintaining the heap property.
+
+heapq.heapify(iterable): Convert a list into a valid heap in O(n) time.
+
+heapq.heappushpop(heap, item): Push a new item onto the heap and pop the smallest item, all in one atomic operation.
+
+heapq.heapreplace(heap, item): Pop the smallest item from the heap and push the new item, maintaining the heap property.
+
+Example of Using heapq (Min-Heap):
+python
+Copy
+Edit
+import heapq
+
+# Create an empty heap
+heap = []
+
+# Insert elements into the heap
+heapq.heappush(heap, 10)
+heapq.heappush(heap, 20)
+heapq.heappush(heap, 5)
+heapq.heappush(heap, 15)
+
+# Peek (access) the smallest element
+print("Smallest element:", heap[0])  # O(1) time complexity
+
+# Pop the smallest element
+smallest = heapq.heappop(heap)
+print("Popped smallest element:", smallest)
+
+# The heap after popping the smallest element
+print("Heap after pop:", heap)
+
+# Convert a list into a heap
+arr = [12, 3, 5, 7, 19, 1]
+heapq.heapify(arr)
+print("Heapified array:", arr)
+
+# Pop the smallest element again
+smallest = heapq.heappop(arr)
+print("Popped smallest element after heapify:", smallest)
+Output:
+yaml
+Copy
+Edit
+Smallest element: 5
+Popped smallest element: 5
+Heap after pop: [10, 15, 20]
+Heapified array: [1, 3, 5, 7, 19, 12]
+Popped smallest element after heapify: 1
+Max-Heap Simulation in Python:
+Since Python’s heapq only supports min-heaps, we can simulate a max-heap by negating the values when we push them onto the heap.
+
+python
+Copy
+Edit
+import heapq
+
+# Create an empty heap
+max_heap = []
+
+# Insert elements (negate them to simulate max-heap)
+heapq.heappush(max_heap, -10)  # Insert -10
+heapq.heappush(max_heap, -20)  # Insert -20
+heapq.heappush(max_heap, -5)   # Insert -5
+heapq.heappush(max_heap, -15)  # Insert -15
+
+# Pop the largest element (which is the smallest negative number)
+largest = -heapq.heappop(max_heap)
+print("Popped largest element:", largest)
+
+# Peek (access) the largest element
+print("Largest element:", -max_heap[0])  # O(1) time complexity
+Output:
+yaml
+Copy
+Edit
+Popped largest element: 20
+Largest element: 15
+Priority Queue Example (Min-Priority Queue):
+A typical use case for a heap is implementing a priority queue. In this case, we assign priority levels to elements, and the queue will return elements with the highest priority first.
+
+python
+Copy
+Edit
+import heapq
+
+# Create an empty priority queue
+priority_queue = []
+
+# Insert elements with priority (negative priority to make the min-heap work as max-heap)
+heapq.heappush(priority_queue, (1, 'task1'))  # Priority 1
+heapq.heappush(priority_queue, (3, 'task2'))  # Priority 3
+heapq.heappush(priority_queue, (2, 'task3'))  # Priority 2
+
+# Pop elements based on priority (smallest number means highest priority)
+print("Popped highest priority task:", heapq.heappop(priority_queue))  # Priority 1
+print("Popped next highest priority task:", heapq.heappop(priority_queue))  # Priority 2
+Output:
+lua
+Copy
+Edit
+Popped highest priority task: (1, 'task1')
+Popped next highest priority task: (2, 'task3')
+Use Cases of Heaps / Priority Queues:
+Dijkstra’s Shortest Path Algorithm: Heaps are used to implement the priority queue for efficiently finding the shortest path in a graph.
+
+Huffman Coding: Heaps are used in the construction of Huffman trees for data compression algorithms.
+
+Scheduling Tasks: Priority queues are used in task scheduling systems where tasks need to be executed based on priority.
+
+Heap Sort: A sorting algorithm based on the heap data structure.
+
+Finding the Kth Largest Element: You can use a heap to efficiently find the Kth largest or smallest element in a collection.
+
+Time and Space Complexity:
+Insert (heappush): O(log n)
+
+Pop (heappop): O(log n)
+
+Peek: O(1)
+
+Heapify: O(n)
+
+Space Complexity: O(n), where n is the number of elements in the heap.
+
+Conclusion:
+The heap and priority queue pattern is a powerful tool for solving problems where quick access to the largest or smallest element is needed. The heapq module in Python provides an efficient implementation of a min-heap, and you can simulate a max-heap by negating the values. Heaps are commonly used in algorithms like Dijkstra's algorithm, scheduling, and heap sort, making them a crucial pattern to understand.

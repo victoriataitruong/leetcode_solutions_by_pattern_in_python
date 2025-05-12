@@ -1,0 +1,124 @@
+The binary search pattern is a highly efficient searching algorithm that works on sorted arrays or lists. It allows you to find an element in a sorted list in O(log n) time, which is much faster than linear search (O(n)) for large datasets.
+
+How Binary Search Works:
+Initial Conditions: You have a sorted array (either ascending or descending order).
+
+Divide and Conquer: Binary search works by repeatedly dividing the search interval in half:
+
+Start with the entire array as the search interval.
+
+Compare the target value to the middle element of the array.
+
+If the target is equal to the middle element, you've found the target.
+
+If the target is smaller than the middle element, the search continues in the left half of the array.
+
+If the target is greater than the middle element, the search continues in the right half.
+
+Repeat: Repeat this process on the selected half of the array until the element is found or the search interval is empty.
+
+Steps of Binary Search:
+Find the middle element of the array.
+
+Compare the middle element with the target value:
+
+If they are equal, return the index of the middle element.
+
+If the target is less than the middle element, adjust the search to the left half (reduce the high index).
+
+If the target is greater than the middle element, adjust the search to the right half (increase the low index).
+
+Repeat the process until the element is found or the search range is exhausted.
+
+Python Code Implementation (for a Sorted Array):
+Binary Search Algorithm (Iterative Version):
+python
+Copy
+Edit
+def binarySearch(arr, target):
+    low = 0
+    high = len(arr) - 1
+    
+    while low <= high:
+        mid = (low + high) // 2  # Find the middle index
+        if arr[mid] == target:
+            return mid  # Target found, return its index
+        elif arr[mid] < target:
+            low = mid + 1  # Search in the right half
+        else:
+            high = mid - 1  # Search in the left half
+            
+    return -1  # If target is not found, return -1
+Example Walkthrough:
+Input:
+python
+Copy
+Edit
+arr = [1, 3, 5, 7, 9, 11, 13]
+target = 7
+Step-by-step execution:
+Initial conditions:
+
+low = 0, high = 6 (length of the array - 1)
+
+First iteration:
+
+mid = (0 + 6) // 2 = 3, so arr[mid] = arr[3] = 7
+
+Since arr[mid] == target, we return the index 3.
+
+The target 7 is found at index 3.
+
+Time and Space Complexity:
+Time Complexity: O(log n), where n is the number of elements in the array. Since the search space is halved with each iteration, the number of comparisons grows logarithmically.
+
+Space Complexity: O(1) for the iterative version (constant space), since we only need a few variables to store the low, high, and mid indices.
+
+Binary Search (Recursive Version):
+The recursive version of binary search works in the same way, but instead of using a while loop, it calls itself on the left or right half of the array.
+
+python
+Copy
+Edit
+def binarySearchRecursive(arr, low, high, target):
+    if low > high:
+        return -1  # Target not found
+    
+    mid = (low + high) // 2
+    if arr[mid] == target:
+        return mid  # Target found
+    elif arr[mid] < target:
+        return binarySearchRecursive(arr, mid + 1, high, target)  # Search right half
+    else:
+        return binarySearchRecursive(arr, low, mid - 1, target)  # Search left half
+Example usage:
+python
+Copy
+Edit
+arr = [1, 3, 5, 7, 9, 11, 13]
+target = 7
+result = binarySearchRecursive(arr, 0, len(arr) - 1, target)
+print(result)  # Output: 3
+Time and Space Complexity (Recursive Version):
+Time Complexity: O(log n), as each recursive call halves the search space.
+
+Space Complexity: O(log n) for the recursive stack, since there are log(n) recursive calls in the worst case.
+
+Edge Cases:
+Target not in the array: If the target element is not found, both versions return -1.
+
+Empty array: If the array is empty, the search will immediately return -1.
+
+Multiple occurrences of the target: Binary search returns the index of one occurrence. If you want to find all occurrences of the target, binary search can be modified to continue searching after the first match.
+
+Array with one element: The algorithm will work even with one element (if the element matches the target, the index will be returned; otherwise, -1).
+
+Variations of Binary Search:
+Finding the first or last occurrence of a target: You can modify binary search to find the first or last occurrence of a target in a sorted array.
+
+Search for an element in a rotated sorted array: In this case, the array is sorted but rotated, and binary search can be modified to handle this scenario efficiently.
+
+Finding the smallest element greater than or equal to the target: This can be solved using a slight modification of binary search, known as lower bound search.
+
+Conclusion:
+Binary search is a very efficient algorithm for searching in sorted arrays or lists. It works by repeatedly dividing the search space in half, achieving a time complexity of O(log n), which is much faster than linear search, especially for large datasets. The iterative and recursive versions of binary search both offer the same time complexity, but the iterative version is generally preferred to avoid stack overflow with very deep recursion.

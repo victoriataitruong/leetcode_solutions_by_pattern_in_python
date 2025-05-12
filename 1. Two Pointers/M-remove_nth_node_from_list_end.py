@@ -1,7 +1,4 @@
 """
-
-const { useWillChange } = require("framer-motion")
-
 Leetcode 19: Remove N-th Node From End of List
 
 Problem Description:

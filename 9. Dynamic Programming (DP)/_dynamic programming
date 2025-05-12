@@ -1,0 +1,200 @@
+Dynamic Programming (DP) Pattern in Python
+Dynamic Programming (DP) is an algorithmic technique used to solve problems by breaking them down into simpler subproblems and storing the results of these subproblems to avoid redundant work. DP is particularly effective for problems that exhibit optimal substructure and overlapping subproblems.
+
+Key Concepts of Dynamic Programming:
+Optimal Substructure: A problem has an optimal substructure if the solution to the problem can be constructed efficiently from the solutions of its subproblems. This means that the solution to a larger problem can be built from smaller, simpler subproblems.
+
+Overlapping Subproblems: A problem has overlapping subproblems if the same subproblems are solved multiple times. In these cases, solving the subproblems repeatedly can be inefficient. DP avoids this by storing the results of subproblems so that they don’t need to be recomputed.
+
+Types of Dynamic Programming Approaches:
+Top-Down (Memoization): Start solving the problem recursively, and store the results of subproblems in a table (typically a dictionary or list). When the same subproblem is encountered again, return the stored result.
+
+Bottom-Up (Tabulation): Solve all the subproblems iteratively in a bottom-up manner, starting from the smallest subproblems and building up to the larger problem. This avoids the overhead of recursion.
+
+Steps to Solve a DP Problem:
+Characterize the structure of an optimal solution: Determine the subproblems that need to be solved.
+
+Define the state: Define what the solution to a subproblem will look like. This often involves defining an array or table.
+
+Recurrence Relation: Develop a recurrence relation or formula that expresses the solution to a subproblem in terms of smaller subproblems.
+
+Solve the subproblems: Use either top-down or bottom-up DP to compute the solutions.
+
+Construct the solution: Once the subproblems are solved, construct the solution to the original problem.
+
+Example Problems Using Dynamic Programming
+Example 1: Fibonacci Sequence (Top-Down Memoization)
+The Fibonacci sequence is a classic example of a problem that can be solved using dynamic programming. The problem is defined as:
+
+𝐹
+(
+𝑛
+)
+=
+𝐹
+(
+𝑛
+−
+1
+)
++
+𝐹
+(
+𝑛
+−
+2
+)
+with base cases
+𝐹
+(
+0
+)
+=
+0
+,
+𝐹
+(
+1
+)
+=
+1
+F(n)=F(n−1)+F(n−2)with base casesF(0)=0,F(1)=1
+Top-Down Approach (Memoization):
+In the top-down approach, we solve the problem recursively and use a dictionary or array to store the results of subproblems that we have already computed.
+
+python
+Copy
+Edit
+def fib(n, memo={}):
+    if n in memo:
+        return memo[n]
+    if n <= 1:
+        return n
+    memo[n] = fib(n - 1, memo) + fib(n - 2, memo)  # Store the result
+    return memo[n]
+
+# Example: Compute Fibonacci of 10
+print(fib(10))  # Output: 55
+Explanation:
+Memoization: We store the results of subproblems (i.e., fib(n)) in the memo dictionary to avoid recomputing them.
+
+The function checks if the result of fib(n) has already been computed. If yes, it returns the stored result. If not, it computes it recursively and stores the result for future use.
+
+Example 2: Fibonacci Sequence (Bottom-Up Tabulation)
+The bottom-up approach (tabulation) solves the subproblems iteratively, starting from the base cases and working upwards.
+
+python
+Copy
+Edit
+def fib(n):
+    if n <= 1:
+        return n
+    dp = [0] * (n + 1)  # Create a table to store the results
+    dp[0], dp[1] = 0, 1  # Base cases
+    for i in range(2, n + 1):
+        dp[i] = dp[i - 1] + dp[i - 2]  # Build the solution iteratively
+    return dp[n]
+
+# Example: Compute Fibonacci of 10
+print(fib(10))  # Output: 55
+Explanation:
+The dp list is used to store the results of subproblems.
+
+The solution is built iteratively, starting from the base cases (dp[0] = 0 and dp[1] = 1).
+
+The final result is stored in dp[n].
+
+Example 3: 0/1 Knapsack Problem
+The 0/1 Knapsack Problem is a classic DP problem where you are given a set of items, each with a weight and a value, and a knapsack with a weight capacity. The goal is to maximize the value of the items placed in the knapsack, without exceeding its weight capacity.
+
+Problem:
+Given weights = [2, 3, 4, 5] and values = [3, 4, 5, 6], with a knapsack capacity W = 5, what is the maximum value you can get?
+
+Solution:
+We can solve this problem using dynamic programming by building a 2D DP table, where dp[i][w] represents the maximum value obtainable with the first i items and a knapsack capacity w.
+
+python
+Copy
+Edit
+def knapsack(weights, values, W):
+    n = len(weights)
+    dp = [[0] * (W + 1) for _ in range(n + 1)]  # Create a DP table
+
+    for i in range(1, n + 1):
+        for w in range(1, W + 1):
+            if weights[i - 1] <= w:
+                dp[i][w] = max(dp[i - 1][w], values[i - 1] + dp[i - 1][w - weights[i - 1]])
+            else:
+                dp[i][w] = dp[i - 1][w]  # If the item is too heavy, don't include it
+
+    return dp[n][W]  # The maximum value
+
+# Example: Knapsack problem
+weights = [2, 3, 4, 5]
+values = [3, 4, 5, 6]
+W = 5
+print(knapsack(weights, values, W))  # Output: 7
+Explanation:
+The dp[i][w] table is used to store the maximum value for each subproblem.
+
+We iterate over all items and capacities. If the current item can fit into the knapsack (weights[i-1] <= w), we choose the maximum between:
+
+Including the item and adding its value (values[i-1] + dp[i-1][w-weights[i-1]]).
+
+Not including the item (dp[i-1][w]).
+
+The solution is found at dp[n][W].
+
+Example 4: Longest Common Subsequence (LCS)
+The Longest Common Subsequence (LCS) problem asks for the longest subsequence that two sequences have in common. This is a classic dynamic programming problem.
+
+Problem:
+Given two strings X = "ABCBDAB" and Y = "BDCABB", find the length of the LCS.
+
+python
+Copy
+Edit
+def longest_common_subsequence(X, Y):
+    m, n = len(X), len(Y)
+    dp = [[0] * (n + 1) for _ in range(m + 1)]  # Create a DP table
+
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if X[i - 1] == Y[j - 1]:
+                dp[i][j] = dp[i - 1][j - 1] + 1  # Characters match
+            else:
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])  # Take max from the top or left
+
+    return dp[m][n]  # The length of the LCS
+
+# Example: LCS problem
+X = "ABCBDAB"
+Y = "BDCABB"
+print(longest_common_subsequence(X, Y))  # Output: 4
+Explanation:
+We define a 2D DP table dp[i][j] where dp[i][j] stores the length of the LCS of the first i characters of X and the first j characters of Y.
+
+If the characters X[i-1] and Y[j-1] match, we extend the LCS by 1.
+
+Otherwise, we take the maximum LCS length from the previous row or column (dp[i-1][j] or dp[i][j-1]).
+
+General Steps in Dynamic Programming:
+Identify the subproblems: Break the problem down into smaller overlapping subproblems.
+
+Define the state: Determine how to represent the state of each subproblem (usually using an array or matrix).
+
+Recurrence relation: Formulate a recurrence relation that connects the solution of a problem to the solutions of its subproblems.
+
+Base cases: Identify the simplest subproblems with known solutions.
+
+Fill the table: Use the recurrence relation to fill the DP table or array iteratively or recursively.
+
+Time Complexity of Dynamic Programming:
+Top-Down (Memoization): O(n), where n is the number of unique subproblems (assuming we store the results in a cache).
+
+Bottom-Up (Tabulation): O(n * m), where n and m are the dimensions of the DP table.
+
+In both cases, DP provides a more efficient solution than naive recursion by avoiding repeated calculations of the same subproblems.
+
+Conclusion:
+Dynamic Programming (DP) is a powerful technique for solving problems where solutions to subproblems overlap. It is widely used in optimization problems, where the goal is to find the best solution according to some criteria. By using memoization (top-down) or tabulation (bottom-up), DP ensures that each subproblem is solved once and reused, leading to efficient solutions.

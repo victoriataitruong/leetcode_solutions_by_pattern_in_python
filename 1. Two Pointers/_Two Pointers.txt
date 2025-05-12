@@ -1,0 +1,62 @@
+1. Two Pointers
+The two pointer pattern is a common algorithmic technique used to solve problems involving arrays or lists, especially when searching for pairs or subarrays that meet certain conditions. The idea is to use two indices (pointers) that move through the data structure in a coordinated way to improve efficiency—often reducing time complexity.
+
+When to Use the Two Pointer Pattern
+When dealing with sorted arrays
+When trying to find pairs, remove duplicates, or reverse a sequence
+When looking for a target sum (e.g. pair that adds up to a number)
+ Common Forms
+1. Opposite Ends (Start and End)
+Used when the list is sorted and you're looking for a target sum or condition.
+
+python
+Copy
+Edit
+def has_pair_with_sum(arr, target):
+    arr.sort()  # ensure the list is sorted
+    left, right = 0, len(arr) - 1
+
+    while left < right:
+        current_sum = arr[left] + arr[right]
+        if current_sum == target:
+            return True
+        elif current_sum < target:
+            left += 1
+        else:
+            right -= 1
+    return False
+2. Sliding Window (Both Pointers Move Forward)
+Used when you're looking for subarrays of a certain size or sum.
+
+python
+Copy
+Edit
+def max_subarray_sum(arr, k):
+    left = 0
+    current_sum = 0
+    max_sum = 0
+
+    for right in range(len(arr)):
+        current_sum += arr[right]
+        if right - left + 1 > k:
+            current_sum -= arr[left]
+            left += 1
+        if right - left + 1 == k:
+            max_sum = max(max_sum, current_sum)
+
+    return max_sum
+3. Fast and Slow Pointers
+Often used in linked lists or to detect cycles.
+
+python
+Copy
+Edit
+def has_cycle(head):
+    slow = fast = head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        if slow == fast:
+            return True
+    return False
+Would you like to see a visualization of this pattern in action or apply it to a specific problem?

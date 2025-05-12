@@ -1,0 +1,151 @@
+The bit manipulation pattern is a technique in programming that involves directly manipulating the bits (binary digits) of integers. This is a powerful technique because it allows for highly efficient operations, often reducing time complexity and space complexity in certain problems. Python provides several bitwise operators to perform operations on individual bits of integers.
+
+Basic Bitwise Operators:
+Here are the common bitwise operators in Python:
+
+AND (&): Performs a bitwise AND operation between two numbers.
+
+Example: a & b
+
+For each bit in a and b, the result is 1 if both bits are 1, otherwise it’s 0.
+
+OR (|): Performs a bitwise OR operation.
+
+Example: a | b
+
+The result is 1 if at least one of the bits is 1.
+
+XOR (^): Performs a bitwise XOR (exclusive OR) operation.
+
+Example: a ^ b
+
+The result is 1 if exactly one of the bits is 1, but not both.
+
+NOT (~): Performs a bitwise NOT operation, flipping all the bits.
+
+Example: ~a
+
+Inverts all the bits of a, turning 1s to 0s and 0s to 1s.
+
+Left Shift (<<): Shifts the bits of the number to the left by a specified number of positions.
+
+Example: a << 2
+
+Shifts all bits of a two places to the left, which is equivalent to multiplying a by 2^2 (or 4).
+
+Right Shift (>>): Shifts the bits of the number to the right by a specified number of positions.
+
+Example: a >> 2
+
+Shifts all bits of a two places to the right, which is equivalent to dividing a by 2^2 (or 4) and discarding the remainder.
+
+Key Applications of Bit Manipulation:
+1. Checking if a Number is Even or Odd:
+You can use the bitwise AND operator (&) to check if a number is even or odd:
+
+A number is even if its least significant bit (the rightmost bit) is 0.
+
+A number is odd if its least significant bit is 1.
+
+python
+Copy
+Edit
+def isOdd(n):
+    return n & 1 == 1
+
+def isEven(n):
+    return n & 1 == 0
+2. Finding the Rightmost Set Bit (1):
+To isolate the rightmost set bit of a number, you can use the expression n & -n. This operation will give you a number that has only the rightmost 1 bit set.
+
+python
+Copy
+Edit
+def rightmostSetBit(n):
+    return n & -n  # This gives the rightmost set bit of n
+3. Counting the Number of Set Bits (1's):
+The Hamming Weight or population count is the number of 1 bits in a number. One efficient way to count the number of set bits is by using the expression n & (n - 1), which clears the rightmost set bit one by one.
+
+python
+Copy
+Edit
+def countSetBits(n):
+    count = 0
+    while n:
+        n &= (n - 1)  # This clears the rightmost set bit
+        count += 1
+    return count
+This is known as Brian Kernighan's Algorithm and runs in O(k) time, where k is the number of set bits.
+
+4. Swapping Two Numbers Without a Temporary Variable:
+You can swap two numbers using the XOR operator. This works because XORing two bits twice results in the original value.
+
+python
+Copy
+Edit
+def swap(a, b):
+    a ^= b  # Step 1: a becomes a XOR b
+    b ^= a  # Step 2: b becomes (a XOR b) XOR b = a
+    a ^= b  # Step 3: a becomes (a XOR b) XOR a = b
+    return a, b
+5. Power of Two Check:
+A number is a power of two if it has exactly one bit set to 1. This can be checked using the condition n & (n - 1) == 0.
+
+python
+Copy
+Edit
+def isPowerOfTwo(n):
+    return n > 0 and (n & (n - 1)) == 0
+This works because powers of two in binary have exactly one bit set to 1, so subtracting 1 from a power of two flips all the bits after the 1 bit (including the 1 itself), making the result 0 when ANDed with the original number.
+
+6. Reversing the Bits of a Number:
+You can reverse the bits of a number by iteratively shifting the bits and building the result from the right to the left.
+
+python
+Copy
+Edit
+def reverseBits(n):
+    result = 0
+    for _ in range(32):  # assuming we're working with 32-bit integers
+        result = (result << 1) | (n & 1)  # Shift result and add the last bit of n
+        n >>= 1  # Shift n to the right
+    return result
+This example reverses the bits of a 32-bit integer.
+
+More Complex Applications:
+1. Finding the Single Number:
+In problems like "Find the element that appears only once in an array where every other element appears twice," bit manipulation can be used to solve the problem efficiently.
+
+XORing all numbers will cancel out the ones that appear twice, leaving the number that appears once.
+
+python
+Copy
+Edit
+def singleNumber(nums):
+    result = 0
+    for num in nums:
+        result ^= num  # XOR all the numbers
+    return result
+2. Subset Generation:
+Bit manipulation can be used to generate all possible subsets of a set by interpreting each bit of an integer as either including or excluding the corresponding element.
+
+python
+Copy
+Edit
+def generateSubsets(nums):
+    n = len(nums)
+    subsets = []
+    for i in range(1 << n):  # Loop through all 2^n possible subsets
+        subset = []
+        for j in range(n):
+            if i & (1 << j):  # Check if the j-th bit is set
+                subset.append(nums[j])
+        subsets.append(subset)
+    return subsets
+Time and Space Complexity of Bit Manipulation:
+Time Complexity: Most bit manipulation operations take constant time O(1), but there are cases where you perform multiple operations on the bits, such as iterating over all bits or counting set bits, which could take O(k) time, where k is the number of bits (usually O(32) or O(64) in practice).
+
+Space Complexity: Bit manipulation is typically very space-efficient, using just a small amount of memory for variables (constant space).
+
+Conclusion:
+Bit manipulation is a powerful technique that allows you to perform operations directly on the binary representations of integers. It can be used to solve problems in a very efficient manner, especially when working with low-level data, optimizing for time and space. Many problems involving flags, sets, or binary numbers can be solved with bitwise operators, making this pattern quite versatile.

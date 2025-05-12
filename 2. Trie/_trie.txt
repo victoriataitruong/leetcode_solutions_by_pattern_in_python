@@ -1,0 +1,149 @@
+The Trie pattern is a type of tree data structure used to efficiently store and retrieve strings, particularly for tasks involving prefix-based lookups (e.g., autocomplete, word search). It is especially useful when you need to handle many strings that share common prefixes.
+
+Trie Data Structure:
+A Trie (pronounced as "try") is a tree-like structure where each node represents a character of a string, and paths from the root to a leaf node represent the strings stored in the Trie. The key advantage of using a Trie is that it allows for efficient searching, insertion, and deletion operations, typically in O(m) time complexity, where m is the length of the string being inserted or searched.
+
+Key Operations:
+Insert: Add a word to the Trie.
+
+Search: Check if a word exists in the Trie.
+
+Prefix Search: Check if any words in the Trie start with a given prefix.
+
+Delete: Remove a word from the Trie (though less common, it can be done by updating parent nodes).
+
+Structure:
+TrieNode: Each node typically contains a dictionary (or array) of children, where the key is the character, and the value is another TrieNode.
+
+End-of-Word Marker: Nodes may have a special marker (e.g., is_end_of_word) to indicate that a word ends at that particular node.
+
+Applications:
+Autocomplete: Efficiently finding words that start with a given prefix.
+
+Spell Checking: Checking if a word exists in a dictionary of words.
+
+IP Routing: Trie structures can also be used in routing tables for efficient lookup of IP addresses.
+
+Example: Implementing a Trie in Python
+TrieNode Class:
+python
+Copy
+Edit
+class TrieNode:
+    def __init__(self):
+        self.children = {}  # Dictionary to store children nodes
+        self.is_end_of_word = False  # Flag to mark the end of a word
+Trie Class:
+python
+Copy
+Edit
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()  # Initialize with the root node
+
+    # Insert a word into the Trie
+    def insert(self, word: str):
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                node.children[char] = TrieNode()  # Create a new node if not already present
+            node = node.children[char]
+        node.is_end_of_word = True  # Mark the end of the word
+
+    # Search for a word in the Trie
+    def search(self, word: str) -> bool:
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                return False  # If the character is not found, return False
+            node = node.children[char]
+        return node.is_end_of_word  # Return True if we reach the end of the word
+
+    # Check if there is any word in the Trie that starts with the given prefix
+    def startsWith(self, prefix: str) -> bool:
+        node = self.root
+        for char in prefix:
+            if char not in node.children:
+                return False  # If the character is not found, return False
+            node = node.children[char]
+        return True  # Return True if the prefix is found
+Operations Explanation:
+Insert:
+
+Traverse through each character of the word.
+
+If the character is not already present as a child of the current node, add a new child node.
+
+Once the last character of the word is processed, mark the current node as the end of the word (is_end_of_word = True).
+
+Search:
+
+Traverse through the Trie following the characters of the word.
+
+If any character is not found, return False.
+
+If all characters are found, check if the last node is marked as the end of a word.
+
+StartsWith:
+
+Similar to search, but you don’t need to check for the is_end_of_word flag.
+
+This operation is used to check if there’s any word in the Trie that starts with a given prefix.
+
+Example Usage:
+python
+Copy
+Edit
+# Initialize the Trie
+trie = Trie()
+
+# Insert words into the Trie
+trie.insert("apple")
+trie.insert("app")
+trie.insert("bat")
+trie.insert("batman")
+
+# Search for words
+print(trie.search("apple"))  # Output: True
+print(trie.search("app"))    # Output: True
+print(trie.search("bat"))    # Output: True
+print(trie.search("batman")) # Output: True
+print(trie.search("bats"))   # Output: False
+
+# Check for a prefix
+print(trie.startsWith("app"))  # Output: True
+print(trie.startsWith("bat"))  # Output: True
+print(trie.startsWith("cat"))  # Output: False
+Time Complexity:
+Insert: O(m), where m is the length of the word being inserted. Each character is processed exactly once.
+
+Search: O(m), where m is the length of the word being searched.
+
+StartsWith: O(m), where m is the length of the prefix being checked.
+
+Space Complexity:
+The space complexity is O(N), where N is the total number of characters across all inserted words. This is because each character is stored in a node in the Trie, and the total number of nodes is proportional to the sum of the lengths of the inserted words.
+
+Optimizations:
+Space Optimization (using arrays): If the characters are from a fixed set (e.g., lowercase English letters), you can replace the dictionary with an array of fixed size (26 for lowercase letters).
+
+Efficient Deletion: Deletion is not covered in the example above, but it can be done by removing the is_end_of_word flag and possibly pruning nodes when they are no longer part of a word.
+
+Advantages of Trie:
+Efficient Prefix Search: Tries are particularly efficient for prefix-based search queries, as they allow you to quickly find all words with a given prefix.
+
+Faster Search: Searching and inserting in a Trie is faster than searching in a sorted list or a hash map, especially when dealing with a large number of strings with common prefixes.
+
+Disadvantages of Trie:
+Space Complexity: Tries can use a lot of space, especially when storing a large number of strings with few common prefixes. The space requirement grows as the number of characters in the Trie increases.
+
+Overhead for Small Datasets: For smaller datasets, simpler data structures like arrays, hash maps, or binary search trees may be more space-efficient.
+
+Applications:
+Autocomplete/Prefix Search: Tries are perfect for autocomplete and prefix search tasks, where users type a prefix, and the system suggests words.
+
+Spell Checker: A dictionary of words can be represented as a Trie, allowing for fast lookup of whether a word exists.
+
+IP Routing: Tries are used in IP address lookup tables in networking, where each node in the Trie can represent a portion of an IP address.
+
+In summary, Tries are a powerful tool when you need to efficiently handle string-based searches, particularly when dealing with prefixes. They provide an elegant and efficient solution for problems like autocomplete and dictionary-based search tasks.
